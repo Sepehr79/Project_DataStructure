@@ -86,4 +86,10 @@ public class CityTest {
         Assert.assertEquals(qom.getAdjacentNodes().size(), 2);
     }
 
+    @Test
+    public void testToStringMethodForCity(){
+        City city = new City("isfahan", 1_500_000);
+        System.out.println(city);
+    }
+
 }

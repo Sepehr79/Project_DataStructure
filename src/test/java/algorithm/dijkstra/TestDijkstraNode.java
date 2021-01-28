@@ -1,5 +1,6 @@
 package algorithm.dijkstra;
 
+import beans.City;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -84,6 +85,22 @@ public class TestDijkstraNode {
 
         Assert.assertEquals(nodeA.getAdjacentNodes().size(), 1);
         Assert.assertEquals(nodeA.getAdjacentNodes().get(new DijkstraNode<>("C")), 20, .1);
+    }
+
+    @Test
+    public void testToStringMethod(){
+        DijkstraNode<City> isfahan = new DijkstraNode<>(new City("isfahan"));
+        DijkstraNode<City> tehran = new DijkstraNode<>(new City("tehran"));
+        DijkstraNode<City> karaj = new DijkstraNode<>(new City("karaj"));
+        DijkstraNode<City> qom = new DijkstraNode<>(new City("qom"));
+
+        isfahan.addTwoRoadAdjacent(tehran, 520);
+        isfahan.addTwoRoadAdjacent(karaj, 420);
+        isfahan.addOneRoadAdjacent(qom, 320);
+
+        System.out.println(isfahan);
+
+        System.out.println(qom);
     }
 
 }

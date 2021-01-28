@@ -30,4 +30,9 @@ public class City {
             throw new WrongInputException("Wrong city name format");
         this.name = name;
     }
+
+    @Override
+    public String toString(){
+        return "city: " + name + ", population: " + population;
+    }
 }

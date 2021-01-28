@@ -31,4 +31,14 @@ public class DijkstraNode<DT> {
     public void removeAdjacentNode(DijkstraNode<DT> node){
         adjacentNodes.remove(node);
     }
+
+    @Override
+    public String toString(){
+        StringBuilder str = new StringBuilder(value.toString() + "\n");
+        str.append("neighbor nodes:\n");
+        for (Map.Entry<DijkstraNode<DT>, Float> entry: adjacentNodes.entrySet())
+            str.append("-> ").append(entry.getKey().getValue()).append(" distance: ").append(entry.getValue()).append("\n");
+
+        return str.toString();
+    }
 }
