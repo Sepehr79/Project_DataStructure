@@ -25,6 +25,9 @@ public class TestDijkstraImp {
         nodeF = new DijkstraNode<>("F");
     }
 
+    /**
+     *
+     */
     @Test
     public void testDijkstraImp(){
         nodeA.addTwoRoadAdjacent(nodeB, 10);
