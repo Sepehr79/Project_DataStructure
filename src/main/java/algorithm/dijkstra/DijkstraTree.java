@@ -23,7 +23,6 @@ public class DijkstraTree<DT> {
         for(DijkstraNode<DT> node: nodes){
             node.setDistance(Float.MAX_VALUE);
             node.setShortestPath(new LinkedList<>());
-            node.setAdjacentNodes(new HashMap<>());
         }
     }
 

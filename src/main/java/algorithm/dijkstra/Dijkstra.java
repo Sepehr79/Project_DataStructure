@@ -31,6 +31,7 @@ public class Dijkstra<DT> {
     }
 
     public DijkstraTree calculateShortestPathFromSource(DijkstraTree<DT> graph, DijkstraNode<DT> source) {
+        // reset shortest path and distance of every node
         graph.resetDijkstraTree();
 
         source.setDistance((float) 0);
