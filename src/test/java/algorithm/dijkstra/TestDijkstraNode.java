@@ -47,7 +47,8 @@ public class TestDijkstraNode {
 
         DijkstraTree<String> graph = new DijkstraTree<>();
 
-        graph.addAllNodes(nodeA, nodeB, nodeC, nodeD, nodeE, nodeF);
+        graph.addAllNodes(nodeA, nodeB, nodeC, nodeD, nodeE);
+        graph.addNode(nodeF);
 
         // size of graph
         Assert.assertEquals(graph.getNodes().size(), 6);
