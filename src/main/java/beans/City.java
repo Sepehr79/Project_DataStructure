@@ -1,8 +1,7 @@
 package beans;
 
 import exceptions.WrongInputException;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.*;
 
 @Getter @EqualsAndHashCode(exclude = {"population"})
 public class City {
@@ -10,6 +9,15 @@ public class City {
     private String name;
 
     private int population;
+
+    public City(String name, int population){
+        this.setName(name);
+        this.setPopulation(population);
+    }
+
+    public City(String name){
+        this.setName(name);
+    }
 
     public void setPopulation(int population){
         if (population < 0)
