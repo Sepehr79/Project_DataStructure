@@ -1,5 +1,7 @@
 package algorithm.dijkstra;
 
+import beans.City;
+import exceptions.NodeNotFoundException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,8 +48,6 @@ public class TestDijkstraTree {
 
         tree.addAllNodes(nodeA, nodeB, nodeC, nodeD, nodeE, nodeF);
 
-        tree.addAllNodes(nodeA, nodeB, nodeC, nodeD, nodeE, nodeF);
-
         // before removing
         Assert.assertEquals(tree.getNodes().size(), 6);
         Assert.assertEquals(nodeA.getAdjacentNodes().size(), 2);
@@ -59,6 +59,34 @@ public class TestDijkstraTree {
 
         // after removing from nodes
         Assert.assertEquals(nodeA.getAdjacentNodes().size(), 1);
+    }
+
+    @Test public void testGetNode(){
+        nodeA.addTwoRoadAdjacent(nodeB, 10);
+        nodeA.addTwoRoadAdjacent(nodeC, 15);
+
+        nodeB.addTwoRoadAdjacent(nodeD, 12);
+        nodeB.addTwoRoadAdjacent(nodeF, 15);
+
+        nodeC.addTwoRoadAdjacent(nodeE, 10);
+
+        nodeD.addTwoRoadAdjacent(nodeE, 2);
+        nodeD.addTwoRoadAdjacent(nodeF, 1);
+
+        nodeF.addTwoRoadAdjacent(nodeE, 5);
+
+        DijkstraTree<String> tree = new DijkstraTree<>();
+
+        tree.addAllNodes(nodeA, nodeB, nodeC, nodeD, nodeE, nodeF);
+
+        Assert.assertEquals(tree.getNode(new DijkstraNode<String>("B")), nodeB);
+
+        try{
+            tree.getNode(new DijkstraNode<>("not in tree"));
+            Assert.fail();
+        }catch (Exception exception){
+            Assert.assertTrue(exception instanceof NodeNotFoundException);
+        }
     }
 
 }

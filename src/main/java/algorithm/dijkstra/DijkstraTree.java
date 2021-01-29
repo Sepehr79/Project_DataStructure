@@ -1,5 +1,6 @@
 package algorithm.dijkstra;
 
+import exceptions.NodeNotFoundException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +25,14 @@ public class DijkstraTree<DT> {
             node.setDistance(Float.MAX_VALUE);
             node.setShortestPath(new LinkedList<>());
         }
+    }
+
+    public DijkstraNode<DT> getNode(DijkstraNode<DT> example){
+        for (DijkstraNode<DT> node: nodes)
+            if (node.equals(example))
+                return node;
+
+        throw new NodeNotFoundException("Node not found!");
     }
 
     public void removeNode(DijkstraNode<DT> node){
