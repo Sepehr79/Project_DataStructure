@@ -1,6 +1,5 @@
 package algorithm.dijkstra;
 
-import beans.City;
 import exceptions.NodeNotFoundException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -79,7 +78,7 @@ public class TestDijkstraTree {
 
         tree.addAllNodes(nodeA, nodeB, nodeC, nodeD, nodeE, nodeF);
 
-        Assert.assertEquals(tree.getNode(new DijkstraNode<String>("B")), nodeB);
+        Assert.assertEquals(tree.getNode(new DijkstraNode<>("B")), nodeB);
 
         try{
             tree.getNode(new DijkstraNode<>("not in tree"));

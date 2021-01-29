@@ -57,11 +57,14 @@ public class ConsolePage {
                     break;
                 default:
                     System.out.println("Wrong input!");
-                    System.out.println();
+                    System.out.println(System.lineSeparator());
             }
         }
     }
 
+    /**
+     * show all cities in the current tree
+     */
     private static void showCities() {
         if (tree.getNodes().size() == 0){
             System.out.print("There is no any cities on this country...");
@@ -86,6 +89,9 @@ public class ConsolePage {
         System.out.println(System.lineSeparator());
     }
 
+    /**
+     * insert current cities as neighbor of other cities
+     */
     private static void manageNeighbors() {
         List<DijkstraNode<City>> list = new ArrayList<>(tree.getNodes());
 
@@ -128,11 +134,17 @@ public class ConsolePage {
         System.out.println(System.lineSeparator());
     }
 
+    /**
+     * insert new cities by matrix
+     */
     private static void matrixInsert() {
 
         System.out.println(System.lineSeparator());
     }
 
+    /**
+     * insert new city
+     */
     private static void insertCities() {
         System.out.print("Enter city name: ");
         String cityName = scanner.nextLine();
@@ -173,6 +185,9 @@ public class ConsolePage {
         System.out.println(System.lineSeparator());
     }
 
+    /**
+     * range of population
+     */
     private static void rangeQuery() {
         List<DijkstraNode<City>> dijkstraNodes = new ArrayList<>();
 
@@ -203,6 +218,9 @@ public class ConsolePage {
         System.out.println(System.lineSeparator());
     }
 
+    /**
+     * finding the shortest way
+     */
     private static void routing() {
         List<DijkstraNode<City>> cities = new ArrayList<>(tree.getNodes());
 
