@@ -1,2 +1,4 @@
-# Project_DataStructure
-Project of data structure
+# Project of data structure
+![project](Screenshot%20(53).png)
+
+For more information see [www.baeldung.com](https://www.baeldung.com/java-dijkstra)
