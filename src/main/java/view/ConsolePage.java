@@ -174,7 +174,32 @@ public class ConsolePage {
     }
 
     private static void rangeQuery() {
+        List<DijkstraNode<City>> dijkstraNodes = new ArrayList<>();
 
+        System.out.print("Enter first range: ");
+        String firstRange = scanner.nextLine();
+
+        System.out.print("Enter second range: ");
+        String secondRange = scanner.nextLine();
+
+        for (DijkstraNode<City> dijkstraNode: tree.getNodes())
+            if (dijkstraNode.getValue().getPopulation() >= Integer.parseInt(firstRange) &&
+                    dijkstraNode.getValue().getPopulation() <= Integer.parseInt(secondRange))
+                dijkstraNodes.add(dijkstraNode);
+
+        if (dijkstraNodes.size() != 0){
+            System.out.println("Cities with input range: ");
+            for (DijkstraNode<City> dijkstraNode: dijkstraNodes)
+                System.out.println(dijkstraNode.getValue().getName());
+        }else {
+            System.out.println("No result found!");
+        }
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println(System.lineSeparator());
     }
 
