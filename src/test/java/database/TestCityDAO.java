@@ -53,6 +53,7 @@ public class TestCityDAO {
         Assert.assertEquals(cities.size(), 1);
 
         cityDao.deleteObjects(new City("isfahan"));
+
     }
 
 }
