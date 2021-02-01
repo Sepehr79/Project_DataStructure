@@ -8,7 +8,6 @@ public class TestDijkstraImp {
     private DijkstraNode<String> nodeA;
     private DijkstraNode<String> nodeB;
     private DijkstraNode<String> nodeC;
-    private DijkstraNode<String> nodeD;
     private DijkstraNode<String> nodeE;
     private DijkstraNode<String> nodeF;
 
@@ -20,7 +19,6 @@ public class TestDijkstraImp {
         nodeA = new DijkstraNode<>("A");
         nodeB = new DijkstraNode<>("B");
         nodeC = new DijkstraNode<>("C");
-        nodeD = new DijkstraNode<>("D");
         nodeE = new DijkstraNode<>("E");
         nodeF = new DijkstraNode<>("F");
     }
