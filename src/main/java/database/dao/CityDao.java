@@ -16,24 +16,34 @@ public class CityDao extends DAO implements IDAO<City> {
 
     @Override
     public void insertObject(City city) {
+        openDataBase();
+
         try {
             getStatement().execute(String.format("insert into City(name, population) values('%s', %d);", city.getName(), city.getPopulation()));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
+
+        closeDataBase();
     }
 
     @Override
     public void deleteObjects(City exampleObject) {
+        openDataBase();
+
         try {
             getStatement().execute(String.format("delete from City where name = '%s';", exampleObject.getName()));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
+
+        closeDataBase();
     }
 
     @Override
     public City getObject(City exampleObject) {
+        openDataBase();
+
         City city = null;
 
         try {
@@ -45,12 +55,14 @@ public class CityDao extends DAO implements IDAO<City> {
             exception.printStackTrace();
         }
 
-
+        closeDataBase();
         return city;
     }
 
     @Override
     public List<City> getObjects(String condition) {
+        openDataBase();
+
         List<City> cities = new LinkedList<>();
 
         try {
@@ -66,16 +78,33 @@ public class CityDao extends DAO implements IDAO<City> {
             exception.printStackTrace();
         }
 
+        closeDataBase();
+
         return cities;
     }
 
     @Override
     public void updateObject(City editingObject, City newObject) {
+        openDataBase();
         try {
             getStatement().execute(String.format("update City set name = '%s', population = %d where name = '%s';",
                     newObject.getName(), newObject.getPopulation(), editingObject.getName()));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
+        closeDataBase();
+    }
+
+    @Override
+    public void resetDataBase() {
+        openDataBase();
+
+        try {
+            getStatement().execute("delete from City");
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
+        closeDataBase();
     }
 }

@@ -10,6 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.SQLException;
+import java.util.List;
+
 
 public class TestNeighborDAO {
 
@@ -26,6 +28,9 @@ public class TestNeighborDAO {
         cityDao.insertObject(new City("tehran", 25000000));
         cityDao.insertObject(new City("qom", 750000));
         cityDao.insertObject(new City("gilan", 1200000));
+
+        cityDao.resetDataBase();
+        neighborDao.resetDataBase();
     }
 
     /**
@@ -52,6 +57,8 @@ public class TestNeighborDAO {
 
         // remove way from database
         neighborDao.deleteObjects(new Way(new City("isfahan"), new City("tehran")));
+
+        Assert.assertFalse(neighborDao.hasWay(new Way(new City("isfahan"), new City("tehran"))));
     }
 
     @Test
@@ -59,16 +66,54 @@ public class TestNeighborDAO {
         // insert
         neighborDao.insertObject(new Way(new City("isfahan"), new City("tehran"), 520F));
 
+        Assert.assertTrue(neighborDao.hasWay(new Way(new City("isfahan"), new City("tehran"))));
+
         // delete
         neighborDao.deleteObjects(new Way(new City("isfahan"), new City("tehran")));
 
-        // get deleted way from database
-        Way way = null;
-        try {
-            way = neighborDao.getObject(new Way(new City("isfahan"), new City("tehran")));
-        }catch (Exception exception){
-            Assert.assertTrue(exception instanceof SQLException);
-        }
+        Assert.assertFalse(neighborDao.hasWay(new Way(new City("isfahan"), new City("tehran"))));
+    }
+
+    @Test
+    public void testGetObjects() throws SQLException {
+
+        // insert to the database
+        neighborDao.insertObject(new Way(new City("isfahan"), new City("tehran"), 520F));
+        neighborDao.insertObject(new Way(new City("qom"), new City("gilan"), 345F));
+
+        List<Way> ways = neighborDao.getObjects("distance > 200 and distance < 600");
+
+        Assert.assertEquals(ways.size(), 2);
+
+        Assert.assertEquals(ways.get(0).getOriginCity().getName(), "isfahan");
+        Assert.assertEquals(ways.get(1).getOriginCity().getName(), "qom");
+
+        // delete from database
+        neighborDao.openDataBase();
+        neighborDao.getStatement().execute("delete from Neighbors");
+        neighborDao.closeDataBase();
+
+        Assert.assertFalse(neighborDao.hasWay(new Way(new City("isfahan"), new City("tehran"))));
+        Assert.assertFalse(neighborDao.hasWay(new Way(new City("qom"), new City("gilan"))));
+    }
+
+    @Test
+    public void testUpdateWay(){
+
+        neighborDao.insertObject(new Way(new City("isfahan"), new City("tehran"), 520F));
+
+        neighborDao.updateObject(new Way(new City("isfahan"), new City("tehran")),
+                new Way(new City("tehran"), new City("qom"), 25F));
+
+        Assert.assertFalse(neighborDao.hasWay(new Way(new City("isfahan"), new City("tehran"), 520F)));
+
+        Assert.assertTrue(neighborDao.hasWay(new Way(new City("tehran"), new City("qom"))));
+    }
+
+    @Test
+    public void testInsertFalseObject(){
+        neighborDao.insertObject(new Way(new City("fakeCity"), new City("fakeCity"), 25F));
+        Assert.assertFalse(neighborDao.hasWay(new Way(new City("fakeCity"), new City("faceCity"))));
     }
 
 }

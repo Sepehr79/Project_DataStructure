@@ -11,13 +11,26 @@ import java.sql.Statement;
 public abstract class DAO {
 
     private Statement statement;
-     {
+    private Connection connection;
+
+    public void openDataBase(){
         try {
-            Connection connection = SqliteConnection.getConnection();
+            connection = SqliteConnection.getConnection();
             statement = connection.createStatement();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
     }
+
+    public void closeDataBase(){
+        try {
+            statement.close();
+            connection.close();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public abstract void resetDataBase();
 
 }

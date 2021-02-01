@@ -17,6 +17,7 @@ public class NeighborDao extends DAO implements IDAO<Way> {
 
     @Override
     public void insertObject(Way object) {
+        openDataBase();
         try {
             getStatement().execute(String.format("insert into neighbors(cityName, neighborName, distance)values ('%s', '%s', %f);",
                     object.getOriginCity().getName(),
@@ -24,20 +25,25 @@ public class NeighborDao extends DAO implements IDAO<Way> {
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
+        closeDataBase();
     }
 
     @Override
     public void deleteObjects(Way exampleObject) {
+        openDataBase();
         try {
             getStatement().execute(String.format("delete from neighbors where cityName = '%s' and neighborName = '%s';",
                     exampleObject.getOriginCity().getName(), exampleObject.getDistanceCity().getName()));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
+        closeDataBase();
     }
 
     @Override
     public Way getObject(Way exampleObject) {
+        openDataBase();
+
         Way way = null;
 
         try {
@@ -54,15 +60,18 @@ public class NeighborDao extends DAO implements IDAO<Way> {
             exception.printStackTrace();
         }
 
+        closeDataBase();
         return way;
     }
 
     @Override
     public List<Way> getObjects(String condition) {
+
+        openDataBase();
         List<Way> ways = new LinkedList<>();
 
         try {
-            ResultSet resultSet = getStatement().executeQuery("select * from neighbors where " + ";");
+            ResultSet resultSet = getStatement().executeQuery("select * from Neighbors where " + condition + ";");
 
             while (resultSet.next()){
                 Way way = new Way(new City(resultSet.getString("cityName")),
@@ -75,18 +84,55 @@ public class NeighborDao extends DAO implements IDAO<Way> {
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
+        closeDataBase();
         return ways;
     }
 
     @Override
     public void updateObject(Way editingObject, Way newObject) {
+        openDataBase();
         try {
-            getStatement().execute(String.format("update neighbors set cityName = '%s', neighborName = '%s', distance = %d" +
-                    " where cityName = '%s', neighborName = '%s';", newObject.getOriginCity().getName(),
+            getStatement().execute(String.format("update neighbors set cityName = '%s', neighborName = '%s', distance = %f" +
+                    " where cityName = '%s' and neighborName = '%s';", newObject.getOriginCity().getName(),
                     newObject.getDistanceCity().getName(), newObject.getDistance(),
                     editingObject.getOriginCity().getName(), editingObject.getDistanceCity().getName()));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
+        closeDataBase();
+    }
+
+    public boolean hasWay(Way way){
+        openDataBase();
+        try {
+            ResultSet resultSet = getStatement().executeQuery(String.format("select * from Neighbors"));
+
+            while (resultSet.next()){
+                if (resultSet.getString("cityName").equals(way.getOriginCity().getName())  &&
+                resultSet.getString("neighborName").equals(way.getDistanceCity().getName())){
+                    closeDataBase();
+                    return true;
+                }
+
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        closeDataBase();
+        return false;
+    }
+
+
+    @Override
+    public void resetDataBase() {
+        openDataBase();
+
+        try {
+            getStatement().execute("delete from neighbors");
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
+        closeDataBase();
     }
 }
