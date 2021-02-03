@@ -83,6 +83,29 @@ public class CityDao extends DAO implements IDAO<City> {
         return cities;
     }
 
+    public List<City> getObjects(){
+        openDataBase();
+
+        List<City> cities = new LinkedList<>();
+
+        try {
+            ResultSet resultSet = getStatement().executeQuery("select * from City;");
+
+            while (resultSet.next()){
+                String name = resultSet.getString("name");
+                int population = resultSet.getInt("population");
+
+                cities.add(new City(name, population));
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
+        closeDataBase();
+
+        return cities;
+    }
+
     @Override
     public void updateObject(City editingObject, City newObject) {
         openDataBase();

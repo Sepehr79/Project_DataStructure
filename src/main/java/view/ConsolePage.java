@@ -4,6 +4,7 @@ import algorithm.dijkstra.Dijkstra;
 import algorithm.dijkstra.DijkstraNode;
 import algorithm.dijkstra.DijkstraTree;
 import beans.City;
+import database.api.DataBaseAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +14,9 @@ public class ConsolePage {
 
     static Scanner scanner = new Scanner(System.in);
 
-    static DijkstraTree<City> tree;
-    static {
-        tree = new DijkstraTree<>();
-    }
+    static DataBaseAPI dataBaseAPI = new DataBaseAPI();
+
+    static DijkstraTree<City> tree = dataBaseAPI.getCitiesFromDataBase();
 
     public static void main(String[] args) {
 
@@ -60,6 +60,8 @@ public class ConsolePage {
                     System.out.println(System.lineSeparator());
             }
         }
+
+        dataBaseAPI.insertTree(tree);
     }
 
     /**

@@ -88,6 +88,28 @@ public class NeighborDao extends DAO implements IDAO<Way> {
         return ways;
     }
 
+    public List<Way> getObjects(){
+        openDataBase();
+        List<Way> ways = new LinkedList<>();
+
+        try {
+            ResultSet resultSet = getStatement().executeQuery("select * from Neighbors;");
+
+            while (resultSet.next()){
+                Way way = new Way(new City(resultSet.getString("cityName")),
+                        new City(resultSet.getString("neighborName")),
+                        (float) resultSet.getDouble("distance"));
+
+                ways.add(way);
+            }
+
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        closeDataBase();
+        return ways;
+    }
+
     @Override
     public void updateObject(Way editingObject, Way newObject) {
         openDataBase();
