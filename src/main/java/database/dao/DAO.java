@@ -13,6 +13,24 @@ public abstract class DAO {
     private Statement statement;
     private Connection connection;
 
+    /**
+     * open database when new object of instances created
+     */
+    public DAO(){
+        openDataBase();
+    }
+
+    /**
+     * close database objects of instance collected by garbage
+     */
+    @Override
+    public void finalize(){
+        closeDataBase();
+    }
+
+    /**
+     * open data base
+     */
     public void openDataBase(){
         try {
             connection = SqliteConnection.getConnection();
@@ -22,6 +40,9 @@ public abstract class DAO {
         }
     }
 
+    /**
+     * close database
+     */
     public void closeDataBase(){
         try {
             statement.close();

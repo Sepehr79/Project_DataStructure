@@ -16,11 +16,12 @@ public class ConsolePage {
 
     static DataBaseAPI dataBaseAPI = new DataBaseAPI();
 
-    static DijkstraTree<City> tree = dataBaseAPI.getCitiesFromDataBase();
+    static DijkstraTree<City> tree = dataBaseAPI.getTreeFromDataBase();
 
     public static void main(String[] args) {
 
         String input = "";
+
         while (!input.equals("7")){
             System.out.println("Main page");
             System.out.println("1- Routing");
@@ -29,7 +30,8 @@ public class ConsolePage {
             System.out.println("4- Insert cities by matrix");
             System.out.println("5- Manage city neighbors");
             System.out.println("6- Show cities");
-            System.out.println("7- Exit");
+            System.out.println("7- Save & exit");
+            System.out.println("8- Reset database");
             System.out.print("Your input: ");
 
             input = scanner.nextLine();
@@ -55,13 +57,42 @@ public class ConsolePage {
                     break;
                 case "7":
                     break;
+                case "8":
+                    resetDataBase();
+                    break;
                 default:
                     System.out.println("Wrong input!");
+                    sleepThread(2);
                     System.out.println(System.lineSeparator());
             }
         }
 
         dataBaseAPI.insertTree(tree);
+        System.gc();
+    }
+
+    /**
+     * resetting database and tree
+     */
+    private static void resetDataBase() {
+        System.out.println("Are you sure? y/n");
+        String input2 = scanner.nextLine();
+
+        switch (input2){
+            case "y":
+                dataBaseAPI.resetDataBase();
+                tree = new DijkstraTree<>();
+                System.out.println("Database successfully deleted!");
+                sleepThread(2);
+                break;
+            case "n":
+                break;
+            default:
+                System.out.println("Wrong input!");
+                sleepThread(2);
+        }
+
+        System.out.println(System.lineSeparator());
     }
 
     /**
@@ -70,11 +101,7 @@ public class ConsolePage {
     private static void showCities() {
         if (tree.getNodes().size() == 0){
             System.out.print("There is no any cities on this country...");
-            try {
-                Thread.sleep(1500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            sleepThread(1.5);
         }
 
         else {
@@ -128,11 +155,7 @@ public class ConsolePage {
         }else {
             System.out.print("Number of cities is not enough");
         }
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        sleepThread(2);
         System.out.println(System.lineSeparator());
     }
 
@@ -140,7 +163,6 @@ public class ConsolePage {
      * insert new cities by matrix
      */
     private static void matrixInsert() {
-
         System.out.println(System.lineSeparator());
     }
 
@@ -212,11 +234,7 @@ public class ConsolePage {
             System.out.println("No result found!");
         }
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        sleepThread(2);
         System.out.println(System.lineSeparator());
     }
 
@@ -251,11 +269,19 @@ public class ConsolePage {
         System.out.println(way);
 
         System.out.println("Distance: " + destinationCity.getDistance());
+        sleepThread(2);
+        System.out.println(System.lineSeparator());
+    }
+
+    /**
+     * method for managing thread
+     * @param seconds stopped thread
+     */
+    private static void sleepThread(double seconds){
         try {
-            Thread.sleep(2000);
+            Thread.sleep((long) (seconds * 1000));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(System.lineSeparator());
     }
 }

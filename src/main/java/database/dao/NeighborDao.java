@@ -9,15 +9,24 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * dao for neighbors table
+ */
 public class NeighborDao extends DAO implements IDAO<Way> {
 
+    /**
+     * constructor
+     */
     public NeighborDao(){
         super();
     }
 
+    /**
+     * insert new way object into the database
+     * @param object will insert to the database
+     */
     @Override
     public void insertObject(Way object) {
-        openDataBase();
         try {
             getStatement().execute(String.format("insert into neighbors(cityName, neighborName, distance)values ('%s', '%s', %f);",
                     object.getOriginCity().getName(),
@@ -25,25 +34,32 @@ public class NeighborDao extends DAO implements IDAO<Way> {
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
-        closeDataBase();
+
     }
 
+    /**
+     * delete rows from database by example object
+     * @param exampleObject example to remove objects that are same to the argument object
+     */
     @Override
     public void deleteObjects(Way exampleObject) {
-        openDataBase();
+
         try {
             getStatement().execute(String.format("delete from neighbors where cityName = '%s' and neighborName = '%s';",
                     exampleObject.getOriginCity().getName(), exampleObject.getDistanceCity().getName()));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
-        closeDataBase();
+
     }
 
+    /**
+     * gets unique object by example input object
+     * @param exampleObject condition of gets witch object
+     * @return way instance
+     */
     @Override
     public Way getObject(Way exampleObject) {
-        openDataBase();
-
         Way way = null;
 
         try {
@@ -60,14 +76,19 @@ public class NeighborDao extends DAO implements IDAO<Way> {
             exception.printStackTrace();
         }
 
-        closeDataBase();
+
         return way;
     }
 
+    /**
+     * gets objects by simple sql condition
+     * @param condition
+     * example of correct condition:
+     *            age < 90 and age > 10
+     * @return list of objects
+     */
     @Override
     public List<Way> getObjects(String condition) {
-
-        openDataBase();
         List<Way> ways = new LinkedList<>();
 
         try {
@@ -84,12 +105,16 @@ public class NeighborDao extends DAO implements IDAO<Way> {
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
-        closeDataBase();
+
         return ways;
     }
 
+    /**
+     * simple 'select * from <table name>'
+     * @return list of objects
+     */
     public List<Way> getObjects(){
-        openDataBase();
+
         List<Way> ways = new LinkedList<>();
 
         try {
@@ -106,13 +131,18 @@ public class NeighborDao extends DAO implements IDAO<Way> {
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
-        closeDataBase();
+
         return ways;
     }
 
+    /**
+     * update object by example input object
+     * @param editingObject that will update
+     * @param newObject that will update to the database
+     */
     @Override
     public void updateObject(Way editingObject, Way newObject) {
-        openDataBase();
+
         try {
             getStatement().execute(String.format("update neighbors set cityName = '%s', neighborName = '%s', distance = %f" +
                     " where cityName = '%s' and neighborName = '%s';", newObject.getOriginCity().getName(),
@@ -121,13 +151,18 @@ public class NeighborDao extends DAO implements IDAO<Way> {
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
-        closeDataBase();
+
     }
 
+    /**
+     * checks if object is in the database
+     * @param way instance of way
+     * @return true if way is in database
+     */
     public boolean hasWay(Way way){
-        openDataBase();
+
         try {
-            ResultSet resultSet = getStatement().executeQuery(String.format("select * from Neighbors"));
+            ResultSet resultSet = getStatement().executeQuery("select * from Neighbors");
 
             while (resultSet.next()){
                 if (resultSet.getString("cityName").equals(way.getOriginCity().getName())  &&
@@ -140,21 +175,21 @@ public class NeighborDao extends DAO implements IDAO<Way> {
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
-        closeDataBase();
         return false;
     }
 
 
+    /**
+     * delete all rows from database
+     */
     @Override
     public void resetDataBase() {
-        openDataBase();
-
         try {
             getStatement().execute("delete from neighbors");
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
 
-        closeDataBase();
+
     }
 }
