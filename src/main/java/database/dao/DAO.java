@@ -52,6 +52,4 @@ public abstract class DAO {
         }
     }
 
-    public abstract void resetDataBase();
-
 }

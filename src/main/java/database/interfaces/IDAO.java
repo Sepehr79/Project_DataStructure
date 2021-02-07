@@ -39,4 +39,9 @@ public interface IDAO<DT> {
      */
     public void updateObject(DT editingObject, DT newObject);
 
+    /**
+     * reset database
+     */
+    public  void resetDataBase();
+
 }

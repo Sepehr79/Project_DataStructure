@@ -4,6 +4,7 @@ import beans.City;
 import database.beans.Way;
 import database.interfaces.IDAO;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -13,12 +14,29 @@ import java.util.List;
  * dao for neighbors table
  */
 public class NeighborDao extends DAO implements IDAO<Way> {
-
     /**
      * constructor
      */
+    private PreparedStatement insertWay;
+    private PreparedStatement deleteWay;
+    private PreparedStatement getWay;
+    private PreparedStatement getWays;
+    private PreparedStatement updateWay;
+    private PreparedStatement resetWays;
+
     public NeighborDao(){
         super();
+        try {
+            insertWay = getConnection().prepareStatement("insert into neighbors(cityName, neighborName, distance)values (?, ?, ?)");
+            deleteWay = getConnection().prepareStatement("delete from neighbors where cityName = ? and neighborName = ?");
+            getWay = getConnection().prepareStatement("select * from Neighbors where cityName = ? and neighborName = ?");
+            getWays = getConnection().prepareStatement("select * from Neighbors");
+            updateWay = getConnection().prepareStatement("update neighbors set cityName = ?, neighborName = ?, distance = ?" +
+                    "where cityName = ? and neighborName = ?");
+            resetWays = getConnection().prepareStatement("delete from neighbors");
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
     }
 
     /**
@@ -28,9 +46,10 @@ public class NeighborDao extends DAO implements IDAO<Way> {
     @Override
     public void insertObject(Way object) {
         try {
-            getStatement().execute(String.format("insert into neighbors(cityName, neighborName, distance)values ('%s', '%s', %f);",
-                    object.getOriginCity().getName(),
-                    object.getDistanceCity().getName(), (double) object.getDistance()));
+            insertWay.setString(1, object.getOriginCity().getName());
+            insertWay.setString(2, object.getDistanceCity().getName());
+            insertWay.setDouble(3, (double) object.getDistance());
+            insertWay.execute();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -45,8 +64,9 @@ public class NeighborDao extends DAO implements IDAO<Way> {
     public void deleteObjects(Way exampleObject) {
 
         try {
-            getStatement().execute(String.format("delete from neighbors where cityName = '%s' and neighborName = '%s';",
-                    exampleObject.getOriginCity().getName(), exampleObject.getDistanceCity().getName()));
+            deleteWay.setString(1, exampleObject.getOriginCity().getName());
+            deleteWay.setString(2, exampleObject.getDistanceCity().getName());
+            deleteWay.execute();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -63,10 +83,14 @@ public class NeighborDao extends DAO implements IDAO<Way> {
         Way way = null;
 
         try {
-            ResultSet resultSet = getStatement().executeQuery(String.format("select * from Neighbors where cityName = '%s' and" +
-                            " neighborName = '%s';",
-                    exampleObject.getOriginCity().getName(), exampleObject.getDistanceCity().getName()));
+            getWay.setString(1, exampleObject.getOriginCity().getName());
+            getWay.setString(2, exampleObject.getDistanceCity().getName());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
 
+
+        try(ResultSet resultSet = getWay.executeQuery()) {
             resultSet.next();
 
             way = new Way(new City(resultSet.getString("cityName")),
@@ -75,7 +99,6 @@ public class NeighborDao extends DAO implements IDAO<Way> {
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
-
 
         return way;
     }
@@ -91,9 +114,7 @@ public class NeighborDao extends DAO implements IDAO<Way> {
     public List<Way> getObjects(String condition) {
         List<Way> ways = new LinkedList<>();
 
-        try {
-            ResultSet resultSet = getStatement().executeQuery("select * from Neighbors where " + condition + ";");
-
+        try(ResultSet resultSet = getStatement().executeQuery("select * from Neighbors where " + condition + ";")) {
             while (resultSet.next()){
                 Way way = new Way(new City(resultSet.getString("cityName")),
                         new City(resultSet.getString("neighborName")),
@@ -117,9 +138,7 @@ public class NeighborDao extends DAO implements IDAO<Way> {
 
         List<Way> ways = new LinkedList<>();
 
-        try {
-            ResultSet resultSet = getStatement().executeQuery("select * from Neighbors;");
-
+        try (ResultSet resultSet = getWays.executeQuery()){
             while (resultSet.next()){
                 Way way = new Way(new City(resultSet.getString("cityName")),
                         new City(resultSet.getString("neighborName")),
@@ -144,10 +163,12 @@ public class NeighborDao extends DAO implements IDAO<Way> {
     public void updateObject(Way editingObject, Way newObject) {
 
         try {
-            getStatement().execute(String.format("update neighbors set cityName = '%s', neighborName = '%s', distance = %f" +
-                    " where cityName = '%s' and neighborName = '%s';", newObject.getOriginCity().getName(),
-                    newObject.getDistanceCity().getName(), newObject.getDistance(),
-                    editingObject.getOriginCity().getName(), editingObject.getDistanceCity().getName()));
+            updateWay.setString(1, newObject.getOriginCity().getName());
+            updateWay.setString(2, newObject.getDistanceCity().getName());
+            updateWay.setDouble(3, newObject.getDistance());
+            updateWay.setString(4, editingObject.getOriginCity().getName());
+            updateWay.setString(5, editingObject.getDistanceCity().getName());
+            updateWay.execute();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -161,13 +182,10 @@ public class NeighborDao extends DAO implements IDAO<Way> {
      */
     public boolean hasWay(Way way){
 
-        try {
-            ResultSet resultSet = getStatement().executeQuery("select * from Neighbors");
-
+        try(ResultSet resultSet = getWays.executeQuery()) {
             while (resultSet.next()){
                 if (resultSet.getString("cityName").equals(way.getOriginCity().getName())  &&
                 resultSet.getString("neighborName").equals(way.getDistanceCity().getName())){
-                    closeDataBase();
                     return true;
                 }
 
@@ -185,11 +203,9 @@ public class NeighborDao extends DAO implements IDAO<Way> {
     @Override
     public void resetDataBase() {
         try {
-            getStatement().execute("delete from neighbors");
+            resetWays.execute();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
-
-
     }
 }

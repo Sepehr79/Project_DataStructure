@@ -24,13 +24,13 @@ public class TestNeighborDAO {
      */
     @Before
     public void insertCities(){
+        cityDao.resetDataBase();
+        neighborDao.resetDataBase();
+
         cityDao.insertObject(new City("isfahan", 15000000));
         cityDao.insertObject(new City("tehran", 25000000));
         cityDao.insertObject(new City("qom", 750000));
         cityDao.insertObject(new City("gilan", 1200000));
-
-        cityDao.resetDataBase();
-        neighborDao.resetDataBase();
     }
 
     /**
@@ -89,9 +89,7 @@ public class TestNeighborDAO {
         Assert.assertEquals(ways.get(1).getOriginCity().getName(), "qom");
 
         // delete from database
-        neighborDao.openDataBase();
         neighborDao.getStatement().execute("delete from Neighbors");
-        neighborDao.closeDataBase();
 
         Assert.assertFalse(neighborDao.hasWay(new Way(new City("isfahan"), new City("tehran"))));
         Assert.assertFalse(neighborDao.hasWay(new Way(new City("qom"), new City("gilan"))));
