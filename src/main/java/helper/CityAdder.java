@@ -7,6 +7,11 @@ import exceptions.EmptyTreeException;
 
 public class CityAdder {
 
+    /**
+     * add sample graph to the tree, tree must be empty
+     * @param tree graph will add to it
+     * @throws EmptyTreeException if size of tree is not empty
+     */
     public void addCities(DijkstraTree<City> tree) throws EmptyTreeException {
         if (tree.getNodes().size() > 0){
             throw new EmptyTreeException("Input Tree must be empty");
