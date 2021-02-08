@@ -5,6 +5,8 @@ import algorithm.dijkstra.DijkstraNode;
 import algorithm.dijkstra.DijkstraTree;
 import beans.City;
 import database.api.DataBaseAPI;
+import helper.CityAdder;
+import exceptions.EmptyTreeException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,16 +24,16 @@ public class ConsolePage {
 
         String input = "";
 
-        while (!input.equals("7")){
+        while (!input.equals("6")){
             System.out.println("Main page");
             System.out.println("1- Routing");
             System.out.println("2- Range Query");
             System.out.println("3- Insert a new city");
-            System.out.println("4- Insert cities by matrix");
-            System.out.println("5- Manage city neighbors");
-            System.out.println("6- Show cities");
-            System.out.println("7- Save & exit");
-            System.out.println("8- Reset database");
+            System.out.println("4- Manage city neighbors");
+            System.out.println("5- Show cities");
+            System.out.println("6- Save & exit");
+            System.out.println("7- Reset database");
+            System.out.println("8- Add graph cities");
             System.out.print("Your input: ");
 
             input = scanner.nextLine();
@@ -47,18 +49,18 @@ public class ConsolePage {
                     insertCities();
                     break;
                 case "4":
-                    matrixInsert();
-                    break;
-                case "5":
                     manageNeighbors();
                     break;
-                case "6":
+                case "5":
                     showCities();
                     break;
+                case "6":
+                    break;
                 case "7":
+                    resetDataBase();
                     break;
                 case "8":
-                    resetDataBase();
+                    addGraphCities();
                     break;
                 default:
                     System.out.println("Wrong input!");
@@ -67,8 +69,21 @@ public class ConsolePage {
             }
         }
 
+        System.out.println("Writing data on database please wait...");
         dataBaseAPI.insertTree(tree);
+        System.out.println("Data successfully wrote!");
         System.gc();
+    }
+
+    private static void addGraphCities() {
+        CityAdder cityAdder = new CityAdder();
+
+        try {
+            cityAdder.addCities(tree);
+        } catch (EmptyTreeException e) {
+            System.out.println("Tree must be empty!");
+            sleepThread(2);
+        }
     }
 
     /**
@@ -160,23 +175,24 @@ public class ConsolePage {
     }
 
     /**
-     * insert new cities by matrix
-     */
-    private static void matrixInsert() {
-        System.out.println(System.lineSeparator());
-    }
-
-    /**
      * insert new city
      */
     private static void insertCities() {
         System.out.print("Enter city name: ");
         String cityName = scanner.nextLine();
 
+        DijkstraNode<City> insertingCity = new DijkstraNode<>(new City(cityName));
+
+        if (tree.getNodes().contains(insertingCity)){
+            System.out.println("City already exists!");
+            sleepThread(2);
+            return;
+        }
+
         System.out.print("Enter city population: ");
         String population = scanner.nextLine();
 
-        DijkstraNode<City> insertingCity = new DijkstraNode<>(new City(cityName, Integer.parseInt(population)));
+        insertingCity.getValue().setPopulation(Integer.parseInt(population));
 
         List<DijkstraNode<City>> cities = new ArrayList<>(tree.getNodes());
         if (cities.size() != 0){
