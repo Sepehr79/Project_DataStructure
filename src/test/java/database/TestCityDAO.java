@@ -15,6 +15,7 @@ public class TestCityDAO {
     @Before
     public void createNewInstance(){
         cityDao = new CityDao();
+        cityDao.resetDataBase();
     }
 
     @Test
