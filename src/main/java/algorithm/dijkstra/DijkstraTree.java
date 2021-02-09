@@ -1,12 +1,9 @@
 package algorithm.dijkstra;
 
 import exceptions.NodeNotFoundException;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.*;
 
-@Getter @Setter
 public class DijkstraTree<DT> {
 
     private Set<DijkstraNode<DT>> nodes = new HashSet<>();
@@ -15,7 +12,6 @@ public class DijkstraTree<DT> {
         nodes.add(dijkstraNode);
     }
 
-    @SafeVarargs
     public final void addAllNodes(DijkstraNode<DT>... dijkstraNodes){
         nodes.addAll(Arrays.asList(dijkstraNodes));
     }
@@ -44,4 +40,11 @@ public class DijkstraTree<DT> {
             neighbors.removeAdjacentNode(node);
     }
 
+    public Set<DijkstraNode<DT>> getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(Set<DijkstraNode<DT>> nodes) {
+        this.nodes = nodes;
+    }
 }

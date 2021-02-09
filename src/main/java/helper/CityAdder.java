@@ -17,7 +17,7 @@ public class CityAdder {
             throw new EmptyTreeException("Input Tree must be empty");
         }
 
-        DijkstraNode<City> yazd = new DijkstraNode<City>(new City("yazd", 80000));
+        DijkstraNode<City> yazd = new DijkstraNode<>(new City("yazd", 80000));
         DijkstraNode<City> isfahan = new DijkstraNode<>(new City("isfahan", 2000000));
         DijkstraNode<City> shahrkord = new DijkstraNode<>(new City("shahrkord", 190000));
         DijkstraNode<City> semnan = new DijkstraNode<>(new City("semnan", 185000));

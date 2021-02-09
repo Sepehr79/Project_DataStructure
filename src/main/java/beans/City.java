@@ -1,9 +1,7 @@
 package beans;
 
 import exceptions.WrongInputException;
-import lombok.*;
 
-@Getter @EqualsAndHashCode(exclude = {"population"})
 public class City {
 
     private String name;
@@ -34,5 +32,24 @@ public class City {
     @Override
     public String toString(){
         return "city: " + name + ", population: " + population;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPopulation() {
+        return population;
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        City city = (City) obj;
+        return city.getName().equals(this.getName());
+    }
+
+    @Override
+    public int hashCode(){
+        return this.getName().hashCode();
     }
 }

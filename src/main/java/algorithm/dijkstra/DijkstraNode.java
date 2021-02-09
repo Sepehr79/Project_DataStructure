@@ -1,17 +1,13 @@
 package algorithm.dijkstra;
 
-import lombok.*;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-@Getter @Setter @AllArgsConstructor @RequiredArgsConstructor
-@EqualsAndHashCode(exclude = {"shortestPath", "distance", "adjacentNodes"})
 public class DijkstraNode<DT> {
 
-    private @NonNull DT value;
+    private DT value;
 
     private List<DijkstraNode<DT>> shortestPath = new LinkedList<>();
 
@@ -40,5 +36,59 @@ public class DijkstraNode<DT> {
             str.append("-> ").append(entry.getKey().getValue()).append(" distance: ").append(entry.getValue()).append("\n");
 
         return str.toString();
+    }
+
+    public DT getValue() {
+        return value;
+    }
+
+    public void setValue(DT value) {
+        this.value = value;
+    }
+
+    public List<DijkstraNode<DT>> getShortestPath() {
+        return shortestPath;
+    }
+
+    public void setShortestPath(List<DijkstraNode<DT>> shortestPath) {
+        this.shortestPath = shortestPath;
+    }
+
+    public Float getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Float distance) {
+        this.distance = distance;
+    }
+
+    public Map<DijkstraNode<DT>, Float> getAdjacentNodes() {
+        return adjacentNodes;
+    }
+
+    public void setAdjacentNodes(Map<DijkstraNode<DT>, Float> adjacentNodes) {
+        this.adjacentNodes = adjacentNodes;
+    }
+
+    public DijkstraNode(DT value, List<DijkstraNode<DT>> shortestPath, Float distance, Map<DijkstraNode<DT>, Float> adjacentNodes) {
+        this.value = value;
+        this.shortestPath = shortestPath;
+        this.distance = distance;
+        this.adjacentNodes = adjacentNodes;
+    }
+
+    public DijkstraNode(DT value) {
+        this.value = value;
+    }
+
+    @Override
+    public boolean equals(Object object){
+        DijkstraNode<DT> dijkstraNode = (DijkstraNode<DT>) object;
+        return this.getValue().equals(((DijkstraNode<?>) object).value);
+    }
+
+    @Override
+    public int hashCode(){
+        return this.getValue().hashCode();
     }
 }

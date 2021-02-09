@@ -6,11 +6,9 @@ import beans.City;
 import database.beans.Way;
 import database.dao.CityDao;
 import database.dao.NeighborDao;
-import lombok.Getter;
 
 import java.util.Map;
 
-@Getter
 public class DataBaseAPI {
 
     private final CityDao cityDao = new CityDao();
@@ -75,5 +73,13 @@ public class DataBaseAPI {
                 neighborDao.insertObject(new Way(cityDijkstraNode.getValue(), entry.getKey().getValue(), entry.getValue()));
             }
         }
+    }
+
+    public CityDao getCityDao() {
+        return cityDao;
+    }
+
+    public NeighborDao getNeighborDao() {
+        return neighborDao;
     }
 }
