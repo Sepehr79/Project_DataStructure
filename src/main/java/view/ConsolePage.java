@@ -9,6 +9,7 @@ import helper.CityAdder;
 import exceptions.EmptyTreeException;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -34,6 +35,7 @@ public class ConsolePage {
             System.out.println("6- Save & exit");
             System.out.println("7- Reset database");
             System.out.println("8- Add graph cities");
+            System.out.println("9- Delete a city from graph");
             System.out.print("Your input: ");
 
             input = scanner.nextLine();
@@ -62,6 +64,9 @@ public class ConsolePage {
                 case "8":
                     addGraphCities();
                     break;
+                case "9":
+                    removeNode();
+                    break;
                 default:
                     System.out.println("Wrong input!");
                     sleepThread(2);
@@ -73,6 +78,22 @@ public class ConsolePage {
         dataBaseAPI.insertTree(tree);
         System.out.println("Data successfully wrote!");
         System.gc();
+    }
+
+    private static void removeNode() {
+        List<DijkstraNode<City>> cities = new LinkedList<>(tree.getNodes());
+        System.out.println("Select the city you want to delete: ");
+        for (int i = 1 ; i <= tree.getNodes().size(); i++){
+            System.out.println(i + ": " + cities.get(i-1));
+        }
+        System.out.println("Your input: ");
+        String input = scanner.nextLine();
+
+        DijkstraNode<City> deletingNode = cities.get(Integer.parseInt(input) - 1);
+        tree.removeNode(deletingNode);
+        System.out.println("Selected city successfully deleted!");
+        sleepThread(2);
+
     }
 
     private static void addGraphCities() {
