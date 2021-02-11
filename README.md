@@ -10,14 +10,15 @@ For more information see [www.baeldung.com](https://www.baeldung.com/java-dijkst
 4. Run the following command:
   > mvn exec:java -Dexec.mainClass="com.example.Main"
 
-![Graph](pictures/graph.png)
+
 ##Information
-The image above shows a simple graph of the initial state of the project with real distances.
+The image below shows a simple graph of the initial state of the project with real distances.
 we are trying to find the shortest route between different cities.
 for example what is the shortest route between the cities of **Isfahan** and **Hamedan**?
 
+![Graph](pictures/graph.png)
+
+How can we get a range of city populations as shown below?
 
 ![City population](pictures/Screenshot%20(57).png)
-
-How can we get a range of city populations as shown above?
 
