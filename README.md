@@ -16,3 +16,8 @@ The image above shows a simple graph of the initial state of the project with re
 we are trying to find the shortest route between different cities.
 for example what is the shortest route between the cities of **Isfahan** and **Hamedan**?
 
+
+![City population](pictures/Screenshot%20(57).png)
+
+How can we get a range of city populations as shown above?
+
