@@ -8,7 +8,7 @@ For more information see [www.baeldung.com](https://www.baeldung.com/java-dijkst
 2. Clone the project into a directory   
 3. Open cmd and move to the project directory
 4. Run the following command:
-  > mvn exec:java -Dexec.mainClass="com.example.Main"
+  > mvn exec:java -Dexec.mainClass="view.ConsolePage"
 
 
 ##Information
