@@ -258,10 +258,10 @@ public class ConsolePage {
         System.out.print("Enter second range: ");
         String secondRange = scanner.nextLine();
 
-        for (DijkstraNode<City> dijkstraNode: tree.getNodes())
-            if (dijkstraNode.getValue().getPopulation() >= Integer.parseInt(firstRange) &&
-                    dijkstraNode.getValue().getPopulation() <= Integer.parseInt(secondRange))
-                dijkstraNodes.add(dijkstraNode);
+        tree.getNodes().stream().filter(
+                node -> {return node.getValue().getPopulation() >= Integer.parseInt(firstRange)
+                        && node.getValue().getPopulation() <= Integer.parseInt(secondRange);}
+                ).forEach(dijkstraNodes::add);
 
         if (dijkstraNodes.size() != 0){
             System.out.println("Cities with input range: ");

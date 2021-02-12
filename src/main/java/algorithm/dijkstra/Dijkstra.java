@@ -53,7 +53,10 @@ public class Dijkstra<DT> {
                 }
             }
             settledNodes.add(currentNode);
+
+
         }
     }
-
 }
+
+
